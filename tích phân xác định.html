@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Đề Thi Trắc Nghiệm - Tích Phân Xác Định</title>
+
+  <!-- MathJax -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    };
+  </script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, sans-serif;
+    }
+
+    body{
+      background:#f1f5f9;
+      color:#1e293b;
+      line-height:1.6;
+    }
+
+    header{
+      background:linear-gradient(135deg,#0f172a,#2563eb);
+      color:white;
+      text-align:center;
+      padding:35px;
+    }
+
+    header h1{
+      font-size:34px;
+      margin-bottom:10px;
+    }
+
+    .container{
+      width:90%;
+      max-width:1200px;
+      margin:30px auto;
+    }
+
+    .intro{
+      background:white;
+      padding:25px;
+      border-radius:15px;
+      margin-bottom:25px;
+      box-shadow:0 4px 10px rgba(0,0,0,0.08);
+    }
+
+    .score-box{
+      position:fixed;
+      top:20px;
+      right:20px;
+      background:#0f172a;
+      color:white;
+      padding:15px 22px;
+      border-radius:12px;
+      font-size:20px;
+      z-index:1000;
+      box-shadow:0 5px 12px rgba(0,0,0,0.3);
+    }
+
+    .question-card{
+      background:white;
+      padding:25px;
+      border-radius:15px;
+      margin-bottom:25px;
+      box-shadow:0 4px 10px rgba(0,0,0,0.08);
+      border-left:8px solid #2563eb;
+    }
+
+    .question-title{
+      font-size:20px;
+      font-weight:bold;
+      margin-bottom:15px;
+      color:#1d4ed8;
+    }
+
+    .badge{
+      display:inline-block;
+      padding:6px 14px;
+      border-radius:20px;
+      color:white;
+      font-size:13px;
+      font-weight:bold;
+      margin-bottom:15px;
+    }
+
+    .theory{
+      background:#7c3aed;
+    }
+
+    .easy{
+      background:#16a34a;
+    }
+
+    .medium{
+      background:#f59e0b;
+    }
+
+    .hard{
+      background:#dc2626;
+    }
+
+    .option{
+      background:#f8fafc;
+      border:2px solid #cbd5e1;
+      padding:14px;
+      border-radius:10px;
+      margin:10px 0;
+      cursor:pointer;
+      transition:0.3s;
+    }
+
+    .option:hover{
+      background:#dbeafe;
+    }
+
+    .correct{
+      background:#dcfce7 !important;
+      border-color:#16a34a !important;
+      color:#166534;
+      font-weight:bold;
+    }
+
+    .wrong{
+      background:#fee2e2 !important;
+      border-color:#dc2626 !important;
+      color:#991b1b;
+      font-weight:bold;
+    }
+
+    .explanation{
+      margin-top:15px;
+      padding:15px;
+      border-radius:10px;
+      background:#eff6ff;
+      border-left:5px solid #2563eb;
+      display:none;
+    }
+
+    .tip{
+      margin-top:12px;
+      padding:12px;
+      border-radius:8px;
+      background:#fef9c3;
+      border-left:5px solid #ca8a04;
+    }
+
+    .download-btn{
+      display:block;
+      width:260px;
+      margin:40px auto;
+      text-align:center;
+      padding:15px;
+      background:#2563eb;
+      color:white;
+      text-decoration:none;
+      border-radius:12px;
+      font-size:18px;
+      font-weight:bold;
+      transition:0.3s;
+    }
+
+    .download-btn:hover{
+      background:#1d4ed8;
+    }
+
+    footer{
+      text-align:center;
+      padding:30px;
+      color:#64748b;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<header>
+  <h1>ĐỀ THI TRẮC NGHIỆM TƯƠNG TÁC</h1>
+  <p>Chủ đề: Tích phân xác định & Định lý Newton-Leibniz</p>
+</header>
+
+<div class="score-box">
+  Điểm: <span id="score">0</span>/20
+</div>
+
+<div class="container">
+
+  <div class="intro">
+    <h2>Cấu trúc đề thi</h2>
+
+    <ul>
+      <li>5 câu lý thuyết</li>
+      <li>5 câu dễ</li>
+      <li>5 câu trung bình</li>
+      <li>5 câu khó</li>
+    </ul>
+  </div>
+
+  <div id="quiz"></div>
+
+  <a class="download-btn" download="DeThi_TichPhanXacDinh.html" href="#">
+    Tải file HTML
+  </a>
+
+</div>
+
+<footer>
+  MAE101 - Giải tích cho Kỹ sư
+</footer>
+
+<script>
+
+const questions = [
+
+/* ========================
+   5 CÂU LÝ THUYẾT
+======================== */
+
+{
+level:"theory",
+label:"Lý thuyết",
+question:"Ký hiệu tích phân $\\int$ bắt nguồn từ chữ gì?",
+options:[
+"System",
+"Square",
+"Sum",
+"Signal"
+],
+answer:2,
+explanation:"Ký hiệu tích phân là chữ S kéo dài, viết tắt của Sum (tổng).",
+tip:"Integral = Sum liên tục."
+},
+
+{
+level:"theory",
+label:"Lý thuyết",
+question:"Ý nghĩa chính của tích phân xác định là:",
+options:[
+"Tính đạo hàm",
+"Tính tổng tích lũy",
+"Tìm cực trị",
+"Tính giới hạn"
+],
+answer:1,
+explanation:"Tích phân xác định biểu diễn quá trình cộng dồn liên tục.",
+tip:"Đạo hàm = thay đổi, tích phân = tích lũy."
+},
+
+{
+level:"theory",
+label:"Lý thuyết",
+question:"Theo định lý Newton-Leibniz:",
+options:[
+"$\\int_a^b f(x)dx = f(a)+f(b)$",
+"$\\int_a^b f(x)dx = F(b)-F(a)$",
+"$\\int_a^b f(x)dx = F(a)-F(b)$",
+"$\\int_a^b f(x)dx = f'(x)$"
+],
+answer:1,
+explanation:"Định lý cơ bản của giải tích liên kết nguyên hàm với tích phân.",
+tip:"Lấy nguyên hàm rồi thế cận trên trừ cận dưới."
+},
+
+{
+level:"theory",
+label:"Lý thuyết",
+question:"Tích phân xác định thường biểu diễn:",
+options:[
+"Chu vi hình tròn",
+"Diện tích hình phẳng",
+"Thể tích hình cầu",
+"Độ cong đồ thị"
+],
+answer:1,
+explanation:"Tích phân xác định mô tả diện tích dưới đồ thị.",
+tip:"Area under curve."
+},
+
+{
+level:"theory",
+label:"Lý thuyết",
+question:"Nếu $F'(x)=f(x)$ thì $F(x)$ gọi là:",
+options:[
+"Đạo hàm",
+"Vi phân",
+"Nguyên hàm",
+"Tích số"
+],
+answer:2,
+explanation:"Nguyên hàm là hàm có đạo hàm bằng hàm số ban đầu.",
+tip:"Nguyên hàm là phép ngược của đạo hàm."
+},
+
+/* ========================
+   5 CÂU DỄ
+======================== */
+
+{
+level:"easy",
+label:"Dễ",
+question:"Tính $\\int_1^3 dx$",
+options:[
+"$1$",
+"$2$",
+"$3$",
+"$4$"
+],
+answer:1,
+explanation:"$$\\int_1^3 dx = 3-1=2$$",
+tip:"Tích phân của 1 là độ dài đoạn."
+},
+
+{
+level:"easy",
+label:"Dễ",
+question:"Nguyên hàm của $f(x)=x$ là:",
+options:[
+"$x$",
+"$x^2$",
+"$\\frac{x^2}{2}$",
+"$2x$"
+],
+answer:2,
+explanation:"$$\\int xdx = \\frac{x^2}{2}+C$$",
+tip:"Tăng số mũ lên 1 rồi chia."
+},
+
+{
+level:"easy",
+label:"Dễ",
+question:"Tính $\\int_0^1 xdx$",
+options:[
+"$1$",
+"$\\frac12$",
+"$2$",
+"$0$"
+],
+answer:1,
+explanation:"$$\\int_0^1 xdx = \\left[\\frac{x^2}{2}\\right]_0^1=\\frac12$$",
+tip:"Tính nguyên hàm trước rồi thế cận."
+},
+
+{
+level:"easy",
+label:"Dễ",
+question:"Nguyên hàm của $1/x$ là:",
+options:[
+"$x$",
+"$\\ln x$",
+"$x^2$",
+"$e^x$"
+],
+answer:1,
+explanation:"$$\\int \\frac1x dx = \\ln|x|+C$$",
+tip:"Hàm đặc biệt cần nhớ."
+},
+
+{
+level:"easy",
+label:"Dễ",
+question:"Tính $\\int_2^5 1dx$",
+options:[
+"$2$",
+"$3$",
+"$5$",
+"$7$"
+],
+answer:1,
+explanation:"$$\\int_2^5 dx = 5-2=3$$",
+tip:"Diện tích hình chữ nhật."
+},
+
+/* ========================
+   5 CÂU TRUNG BÌNH
+======================== */
+
+{
+level:"medium",
+label:"Trung bình",
+question:"Tính $\\int_0^2 x^2dx$",
+options:[
+"$\\frac83$",
+"$4$",
+"$2$",
+"$\\frac43$"
+],
+answer:0,
+explanation:"$$\\int_0^2 x^2dx = \\left[\\frac{x^3}{3}\\right]_0^2=\\frac83$$",
+tip:"Nhớ công thức nguyên hàm lũy thừa."
+},
+
+{
+level:"medium",
+label:"Trung bình",
+question:"Tính $\\int_1^e \\frac1x dx$",
+options:[
+"$0$",
+"$1$",
+"$e$",
+"$\\ln 2$"
+],
+answer:1,
+explanation:"$$\\left[\\ln x\\right]_1^e =1-0=1$$",
+tip:"$\\ln e =1$."
+},
+
+{
+level:"medium",
+label:"Trung bình",
+question:"Tính $\\int_0^1 (2x+1)dx$",
+options:[
+"$1$",
+"$2$",
+"$3$",
+"$4$"
+],
+answer:1,
+explanation:"$$\\left[x^2+x\\right]_0^1=2$$",
+tip:"Tách từng hạng tử."
+},
+
+{
+level:"medium",
+label:"Trung bình",
+question:"Diện tích dưới đồ thị $y=x$ từ 0 đến 2 bằng:",
+options:[
+"$1$",
+"$2$",
+"$3$",
+"$4$"
+],
+answer:1,
+explanation:"$$\\int_0^2 xdx =2$$",
+tip:"Có thể nhìn như tam giác: $\\frac12.2.2=2$."
+},
+
+{
+level:"medium",
+label:"Trung bình",
+question:"Tính $\\int_0^\\pi \\sin xdx$",
+options:[
+"$0$",
+"$1$",
+"$2$",
+"$\\pi$"
+],
+answer:2,
+explanation:"$$[-\\cos x]_0^\\pi = 2$$",
+tip:"Sin nguyên hàm thành -cos."
+},
+
+/* ========================
+   5 CÂU KHÓ
+======================== */
+
+{
+level:"hard",
+label:"Khó",
+question:"Tính $\\int_1^2 3x^2dx$",
+options:[
+"$3$",
+"$6$",
+"$7$",
+"$9$"
+],
+answer:2,
+explanation:"$$\\int_1^2 3x^2dx=[x^3]_1^2=8-1=7$$",
+tip:"3 triệt tiêu với chia 3."
+},
+
+{
+level:"hard",
+label:"Khó",
+question:"Tính $\\int_0^1 e^x dx$",
+options:[
+"$e$",
+"$e-1$",
+"$1$",
+"$0$"
+],
+answer:1,
+explanation:"$$[e^x]_0^1=e-1$$",
+tip:"Hàm mũ giữ nguyên khi nguyên hàm."
+},
+
+{
+level:"hard",
+label:"Khó",
+question:"Tính $\\int_1^2 \\frac{1}{x^2}dx$",
+options:[
+"$\\frac12$",
+"$1$",
+"$2$",
+"$\\frac32$"
+],
+answer:0,
+explanation:"$$\\int x^{-2}dx=-x^{-1}$$ nên kết quả bằng $\\frac12$.",
+tip:"Đưa mẫu lên tử dưới dạng số mũ âm."
+},
+
+{
+level:"hard",
+label:"Khó",
+question:"Tính $\\int_0^1 (x^3+2x)dx$",
+options:[
+"$1$",
+"$\\frac54$",
+"$2$",
+"$\\frac32$"
+],
+answer:1,
+explanation:"$$\\left[\\frac{x^4}{4}+x^2\\right]_0^1=\\frac14+1=\\frac54$$",
+tip:"Tính riêng từng phần rồi cộng."
+},
+
+{
+level:"hard",
+label:"Khó",
+question:"Tính $\\int_1^2 \\frac{\\ln x}{x^2}dx$",
+options:[
+"$\\frac{1+\\ln2}{2}$",
+"$\\frac{1-\\ln2}{2}$",
+"$1-\\ln2$",
+"$\\ln2$"
+],
+answer:1,
+explanation:"Dùng tích phân từng phần như bài giảng: $$I=\\frac{1-\\ln2}{2}$$",
+tip:"Thấy $\\ln x$ thường nghĩ đến tích phân từng phần."
+}
+
+];
+
+const quiz = document.getElementById("quiz");
+let score = 0;
+
+questions.forEach((q,index)=>{
+
+let html = `
+<div class="question-card">
+
+<span class="badge ${q.level}">
+${q.label}
+</span>
+
+<div class="question-title">
+Câu ${index+1}. ${q.question}
+</div>
+`;
+
+q.options.forEach((option,i)=>{
+
+html += `
+<div class="option" onclick="checkAnswer(this,${index},${i})">
+${String.fromCharCode(65+i)}. ${option}
+</div>
+`;
+
+});
+
+html += `
+<div class="explanation" id="exp-${index}">
+
+<b>Đáp án đúng:</b> ${String.fromCharCode(65+q.answer)}
+<br><br>
+
+<b>Giải thích:</b> ${q.explanation}
+
+<div class="tip">
+💡 <b>Mẹo làm nhanh:</b> ${q.tip}
+</div>
+
+</div>
+</div>
+`;
+
+quiz.innerHTML += html;
+
+});
+
+function checkAnswer(element,qIndex,selected){
+
+const q = questions[qIndex];
+const parent = element.parentElement;
+const options = parent.querySelectorAll(".option");
+
+options.forEach(opt=>{
+opt.style.pointerEvents="none";
+});
+
+if(selected===q.answer){
+
+element.classList.add("correct");
+score++;
+
+document.getElementById("score").innerText=score;
+
+}
+else{
+
+element.classList.add("wrong");
+options[q.answer].classList.add("correct");
+
+}
+
+document.getElementById(`exp-${qIndex}`).style.display="block";
+
+MathJax.typesetPromise();
+
+}
+
+const downloadBtn = document.querySelector(".download-btn");
+
+downloadBtn.addEventListener("click", function(){
+
+const content = document.documentElement.outerHTML;
+
+const blob = new Blob([content], {type:"text/html"});
+
+const url = URL.createObjectURL(blob);
+
+downloadBtn.href = url;
+
+});
+
+</script>
+
+</body>
+</html>

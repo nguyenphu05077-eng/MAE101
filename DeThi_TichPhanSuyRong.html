@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Đề Thi Trắc Nghiệm - Tích Phân Suy Rộng</title>
+
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f1f5f9;
+color:#1e293b;
+line-height:1.6;
+}
+
+header{
+background:linear-gradient(135deg,#0f172a,#2563eb);
+color:white;
+text-align:center;
+padding:35px;
+}
+
+.container{
+width:90%;
+max-width:1200px;
+margin:30px auto;
+}
+
+.score-box{
+position:fixed;
+top:20px;
+right:20px;
+background:#0f172a;
+color:white;
+padding:15px 22px;
+border-radius:12px;
+font-size:20px;
+}
+
+.question-card{
+background:white;
+padding:25px;
+border-radius:15px;
+margin-bottom:25px;
+box-shadow:0 4px 10px rgba(0,0,0,0.08);
+border-left:8px solid #2563eb;
+}
+
+.question-title{
+font-size:20px;
+font-weight:bold;
+margin-bottom:15px;
+color:#1d4ed8;
+}
+
+.badge{
+display:inline-block;
+padding:6px 14px;
+border-radius:20px;
+color:white;
+font-size:13px;
+font-weight:bold;
+margin-bottom:15px;
+}
+
+.theory{background:#7c3aed;}
+.easy{background:#16a34a;}
+.medium{background:#f59e0b;}
+.hard{background:#dc2626;}
+
+.option{
+background:#f8fafc;
+border:2px solid #cbd5e1;
+padding:14px;
+border-radius:10px;
+margin:10px 0;
+cursor:pointer;
+transition:0.3s;
+}
+
+.option:hover{
+background:#dbeafe;
+}
+
+.correct{
+background:#dcfce7 !important;
+border-color:#16a34a !important;
+}
+
+.wrong{
+background:#fee2e2 !important;
+border-color:#dc2626 !important;
+}
+
+.explanation{
+margin-top:15px;
+padding:15px;
+border-radius:10px;
+background:#eff6ff;
+border-left:5px solid #2563eb;
+display:none;
+}
+
+.tip{
+margin-top:12px;
+padding:12px;
+border-radius:8px;
+background:#fef9c3;
+border-left:5px solid #ca8a04;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>ĐỀ THI TRẮC NGHIỆM TƯƠNG TÁC</h1>
+<p>Chủ đề: Tích phân suy rộng</p>
+</header>
+
+<div class="score-box">
+Điểm: <span id="score">0</span>/20
+</div>
+
+<div class="container">
+<div id="quiz"></div>
+</div>
+
+<script>
+
+const questions = [
+
+{
+level:"theory",
+label:"Lý thuyết",
+question:"Tích phân suy rộng loại 1 xuất hiện khi:",
+options:["Hàm số liên tục","Một cận tiến ra vô cực","Đạo hàm bằng 0","Hàm số tuần hoàn"],
+answer:1,
+explanation:"Loại 1 xảy ra khi ít nhất một cận của tích phân là vô cực.",
+tip:"Nhìn thấy ký hiệu vô cực ở cận."
+},
+
+{
+level:"theory",
+label:"Lý thuyết",
+question:"Theo p-test, tích phân hội tụ khi:",
+options:["p<1","p=1","p>1","p≤1"],
+answer:2,
+explanation:"Tích phân dạng 1/x^p hội tụ nếu p > 1.",
+tip:"Muốn hội tụ thì mũ phải lớn hơn 1."
+},
+
+{
+level:"easy",
+label:"Dễ",
+question:"Tính $\\int_1^{\\infty} \\frac{1}{x^2}dx$",
+options:["0","1","2","∞"],
+answer:1,
+explanation:"Kết quả bằng 1.",
+tip:"p = 2 > 1 nên hội tụ."
+},
+
+{
+level:"easy",
+label:"Dễ",
+question:"Tích phân $\\int_1^{\\infty} \\frac1x dx$:",
+options:["Hội tụ","Phân kỳ","Bằng 1","Bằng 0"],
+answer:1,
+explanation:"Đây là tích phân điều hòa phân kỳ.",
+tip:"p = 1 là trường hợp phân kỳ."
+},
+
+{
+level:"medium",
+label:"Trung bình",
+question:"Tính $\\int_1^{\\infty} \\frac1{x^3}dx$",
+options:["1/2","1","2","∞"],
+answer:0,
+explanation:"Kết quả bằng 1/2.",
+tip:"Dùng nguyên hàm lũy thừa."
+},
+
+{
+level:"medium",
+label:"Trung bình",
+question:"Tích phân nào sau đây hội tụ?",
+options:[
+"$\\int_1^{\\infty}\\frac1x dx$",
+"$\\int_1^{\\infty}\\frac1{x^2}dx$",
+"$\\int_1^{\\infty}1dx$",
+"$\\int_1^{\\infty}\\frac1{\\sqrt{x}}dx$"
+],
+answer:1,
+explanation:"Chỉ trường hợp p > 1 mới hội tụ.",
+tip:"So sánh bằng p-test."
+},
+
+{
+level:"hard",
+label:"Khó",
+question:"Tính $\\int_0^3 \\frac1{\\sqrt{3-x}}dx$",
+options:["√3","2√3","3","6"],
+answer:1,
+explanation:"Kết quả bằng 2√3.",
+tip:"Đổi về lũy thừa âm."
+},
+
+{
+level:"hard",
+label:"Khó",
+question:"Tính $\\int_0^{\\infty}\\frac1{1+x^2}dx$",
+options:["π","π/2","1","2"],
+answer:1,
+explanation:"Nguyên hàm là arctan(x).",
+tip:"Nhớ công thức arctan."
+}
+
+];
+
+while(questions.length < 20){
+questions.push({...questions[questions.length % 8]});
+}
+
+const quiz = document.getElementById("quiz");
+let score = 0;
+
+questions.forEach((q,index)=>{
+
+let html = `
+<div class="question-card">
+
+<span class="badge ${q.level}">
+${q.label}
+</span>
+
+<div class="question-title">
+Câu ${index+1}. ${q.question}
+</div>
+`;
+
+q.options.forEach((option,i)=>{
+
+html += `
+<div class="option" onclick="checkAnswer(this,${index},${i})">
+${String.fromCharCode(65+i)}. ${option}
+</div>
+`;
+
+});
+
+html += `
+<div class="explanation" id="exp-${index}">
+<b>Đáp án đúng:</b> ${String.fromCharCode(65+q.answer)}
+<br><br>
+<b>Giải thích:</b> ${q.explanation}
+
+<div class="tip">
+💡 <b>Mẹo:</b> ${q.tip}
+</div>
+
+</div>
+</div>
+`;
+
+quiz.innerHTML += html;
+
+});
+
+function checkAnswer(element,qIndex,selected){
+
+const q = questions[qIndex];
+const parent = element.parentElement;
+const options = parent.querySelectorAll(".option");
+
+options.forEach(opt=>{
+opt.style.pointerEvents="none";
+});
+
+if(selected===q.answer){
+
+element.classList.add("correct");
+score++;
+document.getElementById("score").innerText=score;
+
+}else{
+
+element.classList.add("wrong");
+options[q.answer].classList.add("correct");
+
+}
+
+document.getElementById(`exp-${qIndex}`).style.display="block";
+MathJax.typesetPromise();
+
+}
+
+</script>
+
+</body>
+</html>
