@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Đề Thi Trắc Nghiệm - Lagrange & Tiệm Cận</title>
+
+  <!-- MathJax -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body{
+      background:#f4f7fb;
+      color:#222;
+      line-height:1.6;
+    }
+
+    header{
+      background:linear-gradient(135deg,#0f172a,#1e3a8a);
+      color:white;
+      padding:30px;
+      text-align:center;
+    }
+
+    header h1{
+      font-size:32px;
+      margin-bottom:10px;
+    }
+
+    .container{
+      width:90%;
+      max-width:1100px;
+      margin:30px auto;
+    }
+
+    .info-box{
+      background:white;
+      padding:20px;
+      border-radius:12px;
+      margin-bottom:25px;
+      box-shadow:0 4px 10px rgba(0,0,0,0.08);
+    }
+
+    .question-card{
+      background:white;
+      padding:25px;
+      margin-bottom:25px;
+      border-radius:12px;
+      box-shadow:0 4px 10px rgba(0,0,0,0.08);
+      border-left:8px solid #2563eb;
+    }
+
+    .question-title{
+      font-size:20px;
+      font-weight:bold;
+      margin-bottom:15px;
+      color:#1e3a8a;
+    }
+
+    .difficulty{
+      display:inline-block;
+      padding:5px 12px;
+      border-radius:20px;
+      font-size:13px;
+      color:white;
+      margin-bottom:15px;
+    }
+
+    .easy{
+      background:#16a34a;
+    }
+
+    .medium{
+      background:#f59e0b;
+    }
+
+    .hard{
+      background:#dc2626;
+    }
+
+    .theory{
+      background:#7c3aed;
+    }
+
+    .option{
+      background:#f8fafc;
+      border:2px solid #cbd5e1;
+      padding:12px;
+      border-radius:10px;
+      margin:10px 0;
+      cursor:pointer;
+      transition:0.3s;
+    }
+
+    .option:hover{
+      background:#dbeafe;
+    }
+
+    .correct{
+      background:#dcfce7 !important;
+      border-color:#16a34a !important;
+      color:#166534;
+      font-weight:bold;
+    }
+
+    .wrong{
+      background:#fee2e2 !important;
+      border-color:#dc2626 !important;
+      color:#991b1b;
+      font-weight:bold;
+    }
+
+    .explanation{
+      margin-top:15px;
+      padding:15px;
+      border-radius:10px;
+      background:#eff6ff;
+      border-left:5px solid #2563eb;
+      display:none;
+    }
+
+    .tip{
+      margin-top:10px;
+      padding:10px;
+      background:#fef9c3;
+      border-left:5px solid #ca8a04;
+      border-radius:8px;
+    }
+
+    .score-box{
+      position:fixed;
+      top:20px;
+      right:20px;
+      background:#1e293b;
+      color:white;
+      padding:15px 20px;
+      border-radius:12px;
+      font-size:18px;
+      z-index:1000;
+      box-shadow:0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .download-btn{
+      display:block;
+      width:250px;
+      margin:40px auto;
+      padding:15px;
+      text-align:center;
+      background:#2563eb;
+      color:white;
+      text-decoration:none;
+      border-radius:12px;
+      font-size:18px;
+      font-weight:bold;
+      transition:0.3s;
+    }
+
+    .download-btn:hover{
+      background:#1d4ed8;
+    }
+
+    footer{
+      text-align:center;
+      padding:30px;
+      color:#64748b;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>ĐỀ THI TRẮC NGHIỆM TƯƠNG TÁC</h1>
+  <p>Chủ đề: Định lý Lagrange & Tiệm cận hàm số</p>
+</header>
+
+<div class="score-box">
+  Điểm: <span id="score">0</span>/20
+</div>
+
+<div class="container">
+
+  <div class="info-box">
+    <h2>Cấu trúc đề thi</h2>
+    <ul>
+      <li>5 câu lý thuyết</li>
+      <li>5 câu bài tập dễ</li>
+      <li>5 câu bài tập trung bình</li>
+      <li>5 câu bài tập khó</li>
+    </ul>
+  </div>
+
+  <div id="quiz"></div>
+
+  <a class="download-btn" download="De_Thi_Lagrange_TiemCan.html"
+     href="data:text/html;charset=utf-8,">
+     Tải file HTML
+  </a>
+
+</div>
+
+<footer>
+  MAE101 - Giải tích cho kỹ sư
+</footer>
+
+<script>
+
+const questions = [
+
+/* =======================
+   5 CÂU LÝ THUYẾT
+======================= */
+
+{
+type:"theory",
+difficulty:"Lý thuyết",
+question:"Điều kiện nào sau đây là bắt buộc để áp dụng định lý giá trị trung bình Lagrange?",
+options:[
+"Hàm số liên tục trên $(a,b)$",
+"Hàm số khả vi trên $[a,b]$",
+"Hàm số liên tục trên $[a,b]$ và khả vi trên $(a,b)$",
+"Hàm số chỉ cần tồn tại đạo hàm tại 1 điểm"
+],
+answer:2,
+explanation:"Định lý Lagrange yêu cầu hàm số liên tục trên đoạn đóng $[a,b]$ và khả vi trên khoảng mở $(a,b)$.",
+tip:"Mẹo nhanh: Đóng thì liên tục, mở thì khả vi."
+},
+
+{
+type:"theory",
+difficulty:"Lý thuyết",
+question:"Ý nghĩa hình học của định lý Lagrange là gì?",
+options:[
+"Tồn tại tiếp tuyến vuông góc cát tuyến",
+"Tồn tại tiếp tuyến song song cát tuyến",
+"Tồn tại tiếp tuyến đi qua gốc tọa độ",
+"Tồn tại tiếp tuyến nằm ngang"
+],
+answer:1,
+explanation:"Tiếp tuyến tại điểm $c$ song song với cát tuyến nối hai điểm đầu mút.",
+tip:"Nhớ từ khóa: tiếp tuyến // cát tuyến."
+},
+
+{
+type:"theory",
+difficulty:"Lý thuyết",
+question:"Đường thẳng $y=L$ được gọi là tiệm cận ngang khi:",
+options:[
+"$\\lim_{x\\to a}f(x)=L$",
+"$\\lim_{x\\to \\pm\\infty}f(x)=L$",
+"$f(a)=L$",
+"$f'(x)=L$"
+],
+answer:1,
+explanation:"Tiệm cận ngang xét hành vi hàm số khi $x$ tiến ra vô cực.",
+tip:"Tiệm cận ngang luôn liên quan $x\\to\\infty$."
+},
+
+{
+type:"theory",
+difficulty:"Lý thuyết",
+question:"Khi nào hàm số có tiệm cận đứng $x=a$?",
+options:[
+"$f(a)=0$",
+"$\\lim_{x\\to a}f(x)=0$",
+"$\\lim_{x\\to a}f(x)=\\pm\\infty$",
+"$f'(a)=0$"
+],
+answer:2,
+explanation:"Khi giá trị hàm số bùng nổ ra vô cực gần $a$ thì xuất hiện tiệm cận đứng.",
+tip:"Mẫu bằng 0 chưa đủ, phải kiểm tra giới hạn."
+},
+
+{
+type:"theory",
+difficulty:"Lý thuyết",
+question:"Tiệm cận xiên thường xuất hiện khi:",
+options:[
+"Bậc tử < bậc mẫu",
+"Bậc tử = bậc mẫu",
+"Bậc tử > bậc mẫu đúng 1 bậc",
+"Hàm số không xác định"
+],
+answer:2,
+explanation:"Nếu bậc tử lớn hơn bậc mẫu đúng một đơn vị thì thường có tiệm cận xiên.",
+tip:"Hiệu bậc = 1 => nghĩ ngay đến chia đa thức."
+},
+
+/* =======================
+   5 CÂU DỄ
+======================= */
+
+{
+type:"easy",
+difficulty:"Dễ",
+question:"Cho $f(x)=x^2$ trên $[1,3]$. Giá trị của $f'(c)$ theo định lý Lagrange là:",
+options:["2","3","4","6"],
+answer:2,
+explanation:"$$f'(c)=\\frac{f(3)-f(1)}{3-1}=\\frac{9-1}{2}=4$$",
+tip:"Lấy hiệu tung độ chia hiệu hoành độ."
+},
+
+{
+type:"easy",
+difficulty:"Dễ",
+question:"Tiệm cận ngang của hàm số $f(x)=\\frac{2x+1}{x+3}$ là:",
+options:["$y=0$","$y=1$","$y=2$","$x=2$"],
+answer:2,
+explanation:"Bậc tử = bậc mẫu nên lấy hệ số đầu: $2/1=2$.",
+tip:"Cùng bậc => lấy hệ số cao nhất."
+},
+
+{
+type:"easy",
+difficulty:"Dễ",
+question:"Hàm số $f(x)=\\frac{1}{x-2}$ có tiệm cận đứng là:",
+options:["$x=0$","$x=1$","$x=2$","$y=2$"],
+answer:2,
+explanation:"Mẫu số bằng 0 tại $x=2$ và giới hạn tiến ra vô cực.",
+tip:"Cho mẫu = 0 trước."
+},
+
+{
+type:"easy",
+difficulty:"Dễ",
+question:"Cho $f(0)=1$, $f'(x)\\le3$. Giá trị lớn nhất của $f(2)$ là:",
+options:["5","6","7","8"],
+answer:2,
+explanation:"$$f(2)-1\\le3(2)\\Rightarrow f(2)\\le7$$",
+tip:"Đạo hàm chặn trên => hàm tăng tối đa theo tốc độ đó."
+},
+
+{
+type:"easy",
+difficulty:"Dễ",
+question:"Hàm số nào sau đây có tiệm cận ngang $y=0$?",
+options:[
+"$\\frac{1}{x}$",
+"$x+1$",
+"$x^2$",
+"$\\frac{x^2+1}{x}$"
+],
+answer:0,
+explanation:"$$\\lim_{x\\to\\infty}\\frac1x=0$$",
+tip:"Mẫu mạnh hơn tử => tiệm cận ngang bằng 0."
+},
+
+/* =======================
+   5 CÂU TRUNG BÌNH
+======================= */
+
+{
+type:"medium",
+difficulty:"Trung bình",
+question:"Cho $f(x)=x^3-3x$ trên $[-1,2]$. Giá trị của $f'(c)$ là:",
+options:["0","1","2","3"],
+answer:0,
+explanation:"$$\\frac{f(2)-f(-1)}{2-(-1)}=\\frac{2-2}{3}=0$$",
+tip:"Tính trước vận tốc trung bình."
+},
+
+{
+type:"medium",
+difficulty:"Trung bình",
+question:"Tiệm cận xiên của $f(x)=\\frac{x^2+1}{x}$ là:",
+options:[
+"$y=x$",
+"$y=x+1$",
+"$y=1$",
+"$x=0$"
+],
+answer:0,
+explanation:"Chia đa thức: $$\\frac{x^2+1}{x}=x+\\frac1x$$ nên tiệm cận xiên là $y=x$.",
+tip:"Chia tử cho mẫu thật nhanh."
+},
+
+{
+type:"medium",
+difficulty:"Trung bình",
+question:"Cho $f'(x)\\ge2$ trên $[1,4]$ và $f(1)=3$. Giá trị nhỏ nhất của $f(4)$ là:",
+options:["6","7","8","9"],
+answer:3,
+explanation:"$$f(4)-3\\ge2(3)=6\\Rightarrow f(4)\\ge9$$",
+tip:"Đạo hàm tối thiểu => mức tăng tối thiểu."
+},
+
+{
+type:"medium",
+difficulty:"Trung bình",
+question:"Tiệm cận ngang của $f(x)=\\frac{5x^2+1}{2x^2-3}$ là:",
+options:[
+"$y=0$",
+"$y=\\frac52$",
+"$y=2$",
+"$y=5$"
+],
+answer:1,
+explanation:"Cùng bậc nên lấy tỉ số hệ số đầu: $5/2$.",
+tip:"Không cần khai triển giới hạn dài."
+},
+
+{
+type:"medium",
+difficulty:"Trung bình",
+question:"Hàm số nào sau đây có tiệm cận đứng?",
+options:[
+"$x^2+1$",
+"$\\sin x$",
+"$\\frac1{x+5}$",
+"$e^x$"
+],
+answer:2,
+explanation:"Mẫu số bằng 0 tại $x=-5$.",
+tip:"Tiệm cận đứng thường xuất hiện ở phân thức."
+},
+
+/* =======================
+   5 CÂU KHÓ
+======================= */
+
+{
+type:"hard",
+difficulty:"Khó",
+question:"Cho $f(x)=\\ln x$ trên $[1,e]$. Theo định lý Lagrange, tồn tại $c$ sao cho:",
+options:[
+"$c=1$",
+"$c=e$",
+"$c=e-1$",
+"$c=\\frac{e-1}{1}$"
+],
+answer:2,
+explanation:"$$f'(c)=\\frac{1}{c}=\\frac{1-0}{e-1}=\\frac1{e-1}$$ nên $c=e-1$.",
+tip:"Đặt đạo hàm bằng hệ số góc cát tuyến."
+},
+
+{
+type:"hard",
+difficulty:"Khó",
+question:"Tiệm cận xiên của $f(x)=\\frac{2x^2+3x+1}{x}$ là:",
+options:[
+"$y=2x+3$",
+"$y=2x$",
+"$y=x+3$",
+"$y=3x+1$"
+],
+answer:0,
+explanation:"$$\\frac{2x^2+3x+1}{x}=2x+3+\\frac1x$$",
+tip:"Chia nhanh từng hạng tử cho $x$."
+},
+
+{
+type:"hard",
+difficulty:"Khó",
+question:"Cho $f'(x)\\le4$ và $f(1)=2$. Giá trị lớn nhất của $f(6)$ là:",
+options:["18","20","22","24"],
+answer:2,
+explanation:"$$f(6)-2\\le4(5)=20\\Rightarrow f(6)\\le22$$",
+tip:"Khoảng cách hoành độ nhân với cận đạo hàm."
+},
+
+{
+type:"hard",
+difficulty:"Khó",
+question:"Tiệm cận ngang của $f(x)=\\frac{7x^3+1}{2x^3+x}$ là:",
+options:[
+"$y=\\frac72$",
+"$y=7$",
+"$y=2$",
+"$y=0$"
+],
+answer:0,
+explanation:"Hai đa thức cùng bậc 3 nên lấy tỉ số hệ số đầu.",
+tip:"Không cần dùng L'Hospital."
+},
+
+{
+type:"hard",
+difficulty:"Khó",
+question:"Hàm số $f(x)=\\frac{x^2+1}{x-1}$ có tiệm cận xiên là:",
+options:[
+"$y=x+1$",
+"$y=x-1$",
+"$y=x$",
+"$y=2x+1$"
+],
+answer:0,
+explanation:"Chia đa thức: $$\\frac{x^2+1}{x-1}=x+1+\\frac2{x-1}$$",
+tip:"Luôn thử phép chia đa thức khi bậc tử lớn hơn mẫu 1."
+}
+
+];
+
+const quiz = document.getElementById("quiz");
+let score = 0;
+
+questions.forEach((q,index)=>{
+
+let diffClass = q.type;
+
+let html = `
+<div class="question-card">
+
+<span class="difficulty ${diffClass}">
+${q.difficulty}
+</span>
+
+<div class="question-title">
+Câu ${index+1}. ${q.question}
+</div>
+`;
+
+q.options.forEach((opt,i)=>{
+html += `
+<div class="option" onclick="checkAnswer(this,${index},${i})">
+${String.fromCharCode(65+i)}. ${opt}
+</div>
+`;
+});
+
+html += `
+<div class="explanation" id="exp-${index}">
+<b>Đáp án đúng:</b> ${String.fromCharCode(65+q.answer)} <br><br>
+<b>Giải thích:</b> ${q.explanation}
+
+<div class="tip">
+💡 <b>Mẹo làm nhanh:</b> ${q.tip}
+</div>
+</div>
+
+</div>
+`;
+
+quiz.innerHTML += html;
+
+});
+
+function checkAnswer(element,qIndex,selected){
+
+const q = questions[qIndex];
+const parent = element.parentElement;
+const options = parent.querySelectorAll(".option");
+
+options.forEach(opt=>{
+opt.style.pointerEvents = "none";
+});
+
+if(selected === q.answer){
+element.classList.add("correct");
+score++;
+document.getElementById("score").innerText = score;
+}
+else{
+element.classList.add("wrong");
+options[q.answer].classList.add("correct");
+}
+
+document.getElementById(`exp-${qIndex}`).style.display="block";
+
+MathJax.typesetPromise();
+
+}
+
+// DOWNLOAD HTML
+
+const downloadBtn = document.querySelector(".download-btn");
+
+downloadBtn.addEventListener("click", function(){
+
+const htmlContent = document.documentElement.outerHTML;
+const blob = new Blob([htmlContent], {type:"text/html"});
+const url = URL.createObjectURL(blob);
+
+downloadBtn.href = url;
+
+});
+
+</script>
+
+</body>
+</html>

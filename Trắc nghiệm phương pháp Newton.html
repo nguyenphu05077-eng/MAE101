@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đề Thi Newton Method - MAE101</title>
+
+  <!-- MathJax -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    };
+  </script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body{
+      background:#eef2ff;
+      color:#1e293b;
+      line-height:1.6;
+    }
+
+    header{
+      background:linear-gradient(135deg,#0f172a,#1d4ed8);
+      color:white;
+      text-align:center;
+      padding:35px;
+    }
+
+    header h1{
+      font-size:34px;
+      margin-bottom:10px;
+    }
+
+    .container{
+      width:90%;
+      max-width:1200px;
+      margin:30px auto;
+    }
+
+    .intro{
+      background:white;
+      padding:25px;
+      border-radius:15px;
+      box-shadow:0 4px 10px rgba(0,0,0,0.1);
+      margin-bottom:25px;
+    }
+
+    .score-board{
+      position:fixed;
+      top:20px;
+      right:20px;
+      background:#0f172a;
+      color:white;
+      padding:15px 25px;
+      border-radius:12px;
+      font-size:20px;
+      z-index:999;
+      box-shadow:0 5px 12px rgba(0,0,0,0.3);
+    }
+
+    .question-card{
+      background:white;
+      border-radius:15px;
+      padding:25px;
+      margin-bottom:25px;
+      box-shadow:0 4px 12px rgba(0,0,0,0.08);
+      border-left:8px solid #2563eb;
+    }
+
+    .question-title{
+      font-size:20px;
+      font-weight:bold;
+      margin-bottom:15px;
+      color:#1e3a8a;
+    }
+
+    .badge{
+      display:inline-block;
+      padding:6px 14px;
+      border-radius:20px;
+      color:white;
+      font-size:13px;
+      margin-bottom:15px;
+      font-weight:bold;
+    }
+
+    .theory{
+      background:#7c3aed;
+    }
+
+    .easy{
+      background:#16a34a;
+    }
+
+    .medium{
+      background:#f59e0b;
+    }
+
+    .hard{
+      background:#dc2626;
+    }
+
+    .option{
+      padding:14px;
+      margin:10px 0;
+      border:2px solid #cbd5e1;
+      border-radius:10px;
+      background:#f8fafc;
+      cursor:pointer;
+      transition:0.3s;
+    }
+
+    .option:hover{
+      background:#dbeafe;
+    }
+
+    .correct{
+      background:#dcfce7 !important;
+      border-color:#16a34a !important;
+      color:#166534;
+      font-weight:bold;
+    }
+
+    .wrong{
+      background:#fee2e2 !important;
+      border-color:#dc2626 !important;
+      color:#991b1b;
+      font-weight:bold;
+    }
+
+    .explanation{
+      margin-top:15px;
+      padding:15px;
+      border-radius:10px;
+      background:#eff6ff;
+      border-left:5px solid #2563eb;
+      display:none;
+    }
+
+    .tip{
+      margin-top:12px;
+      padding:12px;
+      background:#fef9c3;
+      border-left:5px solid #ca8a04;
+      border-radius:8px;
+    }
+
+    .download-btn{
+      display:block;
+      width:260px;
+      margin:40px auto;
+      text-align:center;
+      padding:15px;
+      background:#2563eb;
+      color:white;
+      text-decoration:none;
+      border-radius:12px;
+      font-size:18px;
+      font-weight:bold;
+      transition:0.3s;
+    }
+
+    .download-btn:hover{
+      background:#1d4ed8;
+    }
+
+    footer{
+      text-align:center;
+      padding:30px;
+      color:#64748b;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>ĐỀ THI TRẮC NGHIỆM TƯƠNG TÁC</h1>
+  <p>Phương pháp Newton & Ứng dụng trong AI</p>
+</header>
+
+<div class="score-board">
+  Điểm: <span id="score">0</span>/20
+</div>
+
+<div class="container">
+
+  <div class="intro">
+    <h2>Cấu trúc đề thi</h2>
+    <ul>
+      <li>5 câu lý thuyết</li>
+      <li>5 câu dễ</li>
+      <li>5 câu trung bình</li>
+      <li>5 câu khó</li>
+    </ul>
+  </div>
+
+  <div id="quiz"></div>
+
+  <a class="download-btn" download="Newton_Method_Quiz.html" href="#">
+    Tải file HTML
+  </a>
+
+</div>
+
+<footer>
+  MAE101 - Giải tích cho Kỹ sư
+</footer>
+
+<script>
+
+const questions = [
+
+/* ==========================
+   5 CÂU LÝ THUYẾT
+========================== */
+
+{
+level:"theory",
+label:"Lý thuyết",
+question:"Mục tiêu chính của phương pháp Newton là gì?",
+options:[
+"Tính tích phân",
+"Tìm nghiệm gần đúng của phương trình",
+"Tìm ma trận nghịch đảo",
+"Tính đạo hàm cấp cao"
+],
+answer:1,
+explanation:"Phương pháp Newton dùng để tìm nghiệm gần đúng của phương trình $f(x)=0$.",
+tip:"Nhớ cụm từ khóa: nghiệm gần đúng."
+},
+
+{
+level:"theory",
+label:"Lý thuyết",
+question:"Công thức truy hồi Newton là:",
+options:[
+"$x_{n+1}=x_n+f(x_n)$",
+"$x_{n+1}=x_n-f(x_n)$",
+"$x_{n+1}=x_n-\\frac{f(x_n)}{f'(x_n)}$",
+"$x_{n+1}=\\frac{f(x_n)}{f'(x_n)}$"
+],
+answer:2,
+explanation:"Đây là công thức cốt lõi của Newton Method.",
+tip:"Luôn có dạng: giá trị cũ trừ hiệu chỉnh."
+},
+
+{
+level:"theory",
+label:"Lý thuyết",
+question:"Ý tưởng hình học của Newton là:",
+options:[
+"Dùng diện tích để xấp xỉ",
+"Dùng tiếp tuyến để tìm nghiệm",
+"Dùng chuỗi Fourier",
+"Dùng đạo hàm cấp 3"
+],
+answer:1,
+explanation:"Newton thay đường cong bằng tiếp tuyến tại điểm hiện tại.",
+tip:"Tiếp tuyến chính là linh hồn của Newton."
+},
+
+{
+level:"theory",
+label:"Lý thuyết",
+question:"Điều kiện quan trọng để phương pháp Newton hoạt động là:",
+options:[
+"$f(x)=0$",
+"$f'(x)\\neq0$",
+"$f''(x)=0$",
+"$x=0$"
+],
+answer:1,
+explanation:"Nếu đạo hàm bằng 0 thì mẫu số bị chia cho 0.",
+tip:"Kiểm tra đạo hàm trước khi lặp."
+},
+
+{
+level:"theory",
+label:"Lý thuyết",
+question:"Trong AI, Newton liên quan mạnh nhất đến lĩnh vực nào?",
+options:[
+"Đồ họa máy tính",
+"Tối ưu hóa",
+"Mạng Internet",
+"Hệ điều hành"
+],
+answer:1,
+explanation:"AI cần tối ưu hóa trọng số nên Newton được dùng trong tối ưu.",
+tip:"AI = tối ưu tham số."
+},
+
+/* ==========================
+   5 CÂU DỄ
+========================== */
+
+{
+level:"easy",
+label:"Dễ",
+question:"Cho $f(x)=x^2-4$. Khi đó $f'(x)$ bằng:",
+options:[
+"$2x$",
+"$x$",
+"$x^2$",
+"$2$"
+],
+answer:0,
+explanation:"Đạo hàm của $x^2-4$ là $2x$.",
+tip:"Đạo hàm $x^n = nx^{n-1}$."
+},
+
+{
+level:"easy",
+label:"Dễ",
+question:"Cho $f(x)=x^2-2$, $x_0=1$. Giá trị $x_1$ theo Newton là:",
+options:[
+"$1.5$",
+"$2$",
+"$1$",
+"$0.5$"
+],
+answer:0,
+explanation:"$$x_1=1-\\frac{1^2-2}{2(1)}=1+\\frac12=1.5$$",
+tip:"Làm từng bước: tính tử rồi mẫu."
+},
+
+{
+level:"easy",
+label:"Dễ",
+question:"Nếu phương pháp Newton hội tụ thì sai số thường:",
+options:[
+"Tăng lên",
+"Không đổi",
+"Giảm dần",
+"Vô hạn"
+],
+answer:2,
+explanation:"Mỗi lần lặp thường tiến gần nghiệm hơn.",
+tip:"Newton nổi tiếng vì hội tụ nhanh."
+},
+
+{
+level:"easy",
+label:"Dễ",
+question:"Cho $f(x)=x^3$. Khi đó $f'(x)$ là:",
+options:[
+"$3x^2$",
+"$x^2$",
+"$3x$",
+"$x^3$"
+],
+answer:0,
+explanation:"Đạo hàm của $x^3$ là $3x^2$.",
+tip:"Giảm số mũ xuống 1."
+},
+
+{
+level:"easy",
+label:"Dễ",
+question:"Nếu $f'(x_0)=0$ thì phương pháp Newton:",
+options:[
+"Hội tụ rất nhanh",
+"Không dùng được",
+"Luôn đúng",
+"Tự động ra nghiệm"
+],
+answer:1,
+explanation:"Mẫu số bằng 0 nên công thức không xác định.",
+tip:"Mẫu bằng 0 => dừng ngay."
+},
+
+/* ==========================
+   5 CÂU TRUNG BÌNH
+========================== */
+
+{
+level:"medium",
+label:"Trung bình",
+question:"Cho $f(x)=x^2-5$, $x_0=2$. Giá trị $x_1$ là:",
+options:[
+"$2.25$",
+"$2.5$",
+"$2.75$",
+"$3$"
+],
+answer:0,
+explanation:"$$x_1=2-\\frac{4-5}{4}=2+0.25=2.25$$",
+tip:"Tử số thường rất nhỏ gần nghiệm."
+},
+
+{
+level:"medium",
+label:"Trung bình",
+question:"Cho $f(x)=x^3-1$. Công thức Newton là:",
+options:[
+"$x_{n+1}=x_n-\\frac{x_n^3-1}{3x_n^2}$",
+"$x_{n+1}=x_n+(x_n^3-1)$",
+"$x_{n+1}=\\frac{x_n^3-1}{3}$",
+"$x_{n+1}=x_n^2-1$"
+],
+answer:0,
+explanation:"Áp dụng trực tiếp công thức Newton.",
+tip:"Tính đạo hàm trước rồi thay vào."
+},
+
+{
+level:"medium",
+label:"Trung bình",
+question:"Cho $f(x)=e^x-2$. Đạo hàm là:",
+options:[
+"$e^x$",
+"$2e^x$",
+"$x e^x$",
+"$1$"
+],
+answer:0,
+explanation:"Đạo hàm của $e^x$ vẫn là $e^x$.",
+tip:"Hàm mũ là hàm đặc biệt."
+},
+
+{
+level:"medium",
+label:"Trung bình",
+question:"Nếu chọn điểm bắt đầu quá xa nghiệm thì Newton có thể:",
+options:[
+"Hội tụ chậm hoặc thất bại",
+"Luôn đúng",
+"Cho nghiệm chính xác ngay",
+"Không cần lặp"
+],
+answer:0,
+explanation:"Newton phụ thuộc mạnh vào giá trị ban đầu.",
+tip:"Điểm bắt đầu quyết định số phận."
+},
+
+{
+level:"medium",
+label:"Trung bình",
+question:"Trong AI nhiều chiều, đạo hàm bậc hai mở rộng thành:",
+options:[
+"Ma trận Jacobian",
+"Ma trận Hessian",
+"Ma trận đơn vị",
+"Ma trận nghịch đảo"
+],
+answer:1,
+explanation:"Hessian chứa các đạo hàm bậc hai riêng.",
+tip:"Hessian xuất hiện trong tối ưu hóa."
+},
+
+/* ==========================
+   5 CÂU KHÓ
+========================== */
+
+{
+level:"hard",
+label:"Khó",
+question:"Cho $f(x)=x^2-3$, $x_0=1$. Giá trị $x_1$ là:",
+options:[
+"$2$",
+"$1.5$",
+"$1.75$",
+"$1.25$"
+],
+answer:0,
+explanation:"$$x_1=1-\\frac{1-3}{2}=2$$",
+tip:"Âm trừ âm thành cộng."
+},
+
+{
+level:"hard",
+label:"Khó",
+question:"Cho $f(x)=x^3-2x-5$, $f'(x)$ là:",
+options:[
+"$3x^2-2$",
+"$3x^2+2$",
+"$x^2-2$",
+"$3x-5$"
+],
+answer:0,
+explanation:"Đạo hàm từng hạng tử: $(x^3)'=3x^2$, $(-2x)'=-2$.",
+tip:"Đạo hàm tuyến tính từng phần."
+},
+
+{
+level:"hard",
+label:"Khó",
+question:"Cho $f(x)=\\ln x -1$. Đạo hàm là:",
+options:[
+"$\\ln x$",
+"$1/x$",
+"$x$",
+"$e^x$"
+],
+answer:1,
+explanation:"$$\\frac{d}{dx}(\\ln x)=\\frac1x$$",
+tip:"Logarit tự nhiên có đạo hàm nghịch đảo."
+},
+
+{
+level:"hard",
+label:"Khó",
+question:"Newton Method thuộc nhóm phương pháp nào?",
+options:[
+"Phương pháp lặp",
+"Phương pháp xác suất",
+"Phương pháp thống kê",
+"Phương pháp ma trận"
+],
+answer:0,
+explanation:"Newton dùng lặp nhiều bước để hội tụ nghiệm.",
+tip:"Lặp cho tới khi giá trị ổn định."
+},
+
+{
+level:"hard",
+label:"Khó",
+question:"Trong tối ưu hóa AI, Newton thường nhanh hơn Gradient Descent vì:",
+options:[
+"Dùng đạo hàm bậc hai",
+"Không cần đạo hàm",
+"Không cần dữ liệu",
+"Không cần máy tính"
+],
+answer:0,
+explanation:"Newton tận dụng thông tin độ cong thông qua đạo hàm bậc hai.",
+tip:"Gradient chỉ biết hướng, Newton biết cả độ cong."
+}
+
+];
+
+const quiz = document.getElementById("quiz");
+let score = 0;
+
+questions.forEach((q,index)=>{
+
+let html = `
+<div class="question-card">
+
+<span class="badge ${q.level}">
+${q.label}
+</span>
+
+<div class="question-title">
+Câu ${index+1}. ${q.question}
+</div>
+`;
+
+q.options.forEach((option,i)=>{
+
+html += `
+<div class="option" onclick="checkAnswer(this,${index},${i})">
+${String.fromCharCode(65+i)}. ${option}
+</div>
+`;
+
+});
+
+html += `
+<div class="explanation" id="exp-${index}">
+<b>Đáp án đúng:</b> ${String.fromCharCode(65+q.answer)}
+<br><br>
+
+<b>Giải thích:</b> ${q.explanation}
+
+<div class="tip">
+💡 <b>Mẹo làm nhanh:</b> ${q.tip}
+</div>
+
+</div>
+</div>
+`;
+
+quiz.innerHTML += html;
+
+});
+
+function checkAnswer(element,qIndex,selected){
+
+const q = questions[qIndex];
+const parent = element.parentElement;
+const options = parent.querySelectorAll(".option");
+
+options.forEach(opt=>{
+opt.style.pointerEvents="none";
+});
+
+if(selected===q.answer){
+
+element.classList.add("correct");
+score++;
+
+document.getElementById("score").innerText=score;
+
+}
+else{
+
+element.classList.add("wrong");
+options[q.answer].classList.add("correct");
+
+}
+
+document.getElementById(`exp-${qIndex}`).style.display="block";
+
+MathJax.typesetPromise();
+
+}
+
+const downloadBtn = document.querySelector(".download-btn");
+
+downloadBtn.addEventListener("click", function(){
+
+const content = document.documentElement.outerHTML;
+
+const blob = new Blob([content], {type:"text/html"});
+
+const url = URL.createObjectURL(blob);
+
+downloadBtn.href = url;
+
+});
+
+</script>
+
+</body>
+</html>
